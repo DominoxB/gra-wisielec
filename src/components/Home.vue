@@ -5,24 +5,33 @@
         {{ x }}
       </div>
     </div>
-    <div class="grid grid-cols-2 justify-center items-center mt-20">
-      <transition name="text" appear enter-active-class="transition-all duration-1000 ease-in"
-        enter-from-class="opacity-0 -translate-x-[500px]">
-        <img src="@/img/hangman.png" class="mx-auto" />
-      </transition>
-      <transition name="text" appear enter-active-class="transition-all duration-1000 ease-in"
-        enter-from-class="opacity-0 translate-x-[500px]">
-        <div class="text-6xl mx-auto text-center">
-          <span>start</span>
-          <img src="@/img/arrow.png" class="mt-8 cursor-pointer" />
-        </div>
-      </transition>
-    </div>
   </div>
+  <IntroContent v-if="isStartView" @click-play="play" />
+  <GameContent v-else />
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent, ref } from 'vue'
+import IntroContent from './IntroContent.vue'
+import GameContent from './GameContent.vue'
+
+export default defineComponent({
   name: 'HomePage',
-}
+  components: {
+    IntroContent,
+    GameContent
+  },
+  setup() {
+    const isStartView = ref(true)
+    console.log(isStartView.value)
+    const play = () => {
+      isStartView.value = !isStartView.value
+      console.log(isStartView.value)
+    }
+    return {
+      isStartView,
+      play
+    }
+  }
+})
 </script>
