@@ -5,23 +5,24 @@
         {{ x }}
       </div>
     </div>
-    <div class="ml-60 my-40">
+    <div class="grid grid-cols-2 justify-center items-center mt-20">
       <transition name="text" appear enter-active-class="transition-all duration-1000 ease-in"
         enter-from-class="opacity-0 -translate-x-[500px]">
-        <img src="@/img/hangman.png" />
+        <img src="@/img/hangman.png" class="mx-auto"/>
       </transition>
+      <transition name="text" appear enter-active-class="transition-all duration-1000 ease-in"
+        enter-from-class="opacity-0 translate-x-[500px]">
+    <div class="font-lucky text-6xl mx-auto text-center">
+      <span>start</span>
+      <img src="@/img/arrow.png" class="mt-8 cursor-pointer" />
     </div>
+  </transition>
+  </div>
   </div>
 </template>
 
 <script lang="ts">
 export default {
   name: 'HomePage',
-  setup() {
-    const name = 'wisielec'
-    return {
-      name
-    }
-  }
 }
 </script>
