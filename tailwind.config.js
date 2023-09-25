@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         mont: ['"Montserrat Alternates"'],
+        lucky: ['"Luckiest Guy"']
       },
     },
   },
