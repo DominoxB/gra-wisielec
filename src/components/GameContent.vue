@@ -2,16 +2,7 @@
   <div class="md:grid md:grid-cols-2 p-16">
     <!-- div z plansza wisielca -->
     <div class="mx-auto mb-8 md:mb-0">
-      <img src="@/img/hang1.png" v-if="wrongLetters.length === 1"/>
-      <img src="@/img/hang2.png" v-if="wrongLetters.length === 2"/>
-      <img src="@/img/hang3.png" v-if="wrongLetters.length === 3"/>
-      <img src="@/img/hang4.png" v-if="wrongLetters.length === 4"/>
-      <img src="@/img/hang5.png" v-if="wrongLetters.length === 5"/>
-      <img src="@/img/hang6.png" v-if="wrongLetters.length === 6"/>
-      <img src="@/img/hang7.png" v-if="wrongLetters.length === 7"/>
-      <img src="@/img/hang8.png" v-if="wrongLetters.length === 8"/>
-      <img src="@/img/hang9.png" v-if="wrongLetters.length === 9"/>
-      <img src="@/img/hang10.png" v-if="wrongLetters.length === 10"/>
+      <img :src="imgSrc" v-if="wrongLetters.length > 0" />
     </div>
     <!-- div z hasłem i literami do wyboru -->
     <div>
@@ -23,21 +14,29 @@
       </div>
       <!-- litery -->
       <div class="flex gap-1 md:gap-3 justify-center flex-wrap">
-        <div
-          class="rounded-md text-2xl md:text-4xl p-1 md:p-2 font-lucky"
-          v-for="char in letters" :key="char" @click="selectLetters(char)" :class="checkLetters(char) ? 'text-slate-500 border-2 border-slate-500' : 'border-blue-400 cursor-pointer border-2 md:border-4'">
+        <div class="rounded-md text-2xl md:text-4xl p-1 md:p-2 font-lucky" v-for="char in letters" :key="char"
+          @click="selectLetters(char)"
+          :class="checkLetters(char) ? 'text-slate-500 border-2 border-slate-500' : 'border-blue-400 cursor-pointer border-2 md:border-4'">
           <span>{{ char }}</span>
         </div>
       </div>
     </div>
   </div>
+  <ModalLost v-if="wrongLetters.length >= 10" />
+  <ModalWin v-if="chosenLetters === randomElement" />
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
+import ModalLost from './ModalLost.vue'
+import ModalWin from './ModalWin.vue'
 
 export default defineComponent({
   name: 'GameContent',
+  components: {
+    ModalLost,
+    ModalWin
+  },
   setup() {
     const letters = [
       'a',
@@ -96,17 +95,22 @@ export default defineComponent({
         wrongLetters.value.push(char)
       }
     }
-    console.log(wrongLetters.length)
 
     const checkLetters = (x: string) => {
       return chosenLetters.value.includes(x)
     }
+    
+    const imgSrc = computed(() => {
+      return require(`../img/hang${wrongLetters.value.length}.png`)
+      
+    })
 
     return {
       letters,
       randomElement,
       chosenLetters,
       wrongLetters,
+      imgSrc,
       selectLetters,
       checkLetters
     }

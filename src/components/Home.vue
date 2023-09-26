@@ -23,10 +23,8 @@ export default defineComponent({
   },
   setup() {
     const isStartView = ref(true)
-    console.log(isStartView.value)
     const play = () => {
       isStartView.value = !isStartView.value
-      console.log(isStartView.value)
     }
     return {
       isStartView,
