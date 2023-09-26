@@ -23,7 +23,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   name: "ModalLost",
   emits: ['new-game', 'cancel-action'],
   setup(props, context) {
@@ -39,5 +41,5 @@ export default {
       clickCancel,
     }
   }
-}
+})
 </script>
