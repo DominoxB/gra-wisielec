@@ -4,7 +4,6 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        mont: ['"Montserrat Alternates"'],
         lucky: ['"Luckiest Guy"']
       },
     },
