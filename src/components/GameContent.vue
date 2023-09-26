@@ -87,7 +87,11 @@ export default defineComponent({
       'batoniki',
       'kolczyki',
       'kasztany',
-      'galaktyka'
+      'galaktyka',
+      'rowerzysta',
+      'miniaturka',
+      'porzeczka',
+      'warsztaty'
     ]
 
     const chosenLetters = ref([]) as any
