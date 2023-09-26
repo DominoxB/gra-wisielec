@@ -1,4 +1,5 @@
-# new-project
+# Wisielec
+Projekt znanej i lubianej gry Wisielec, wykonany przy pomocy Vue3, Typescripta i Taiwinda.
 
 ## Project setup
 ```
