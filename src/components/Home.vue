@@ -1,6 +1,6 @@
 <template>
   <div class="font-lucky">
-    <div class="flex justify-center mt-16 text-6xl md:text-8xl text-blue-800 uppercase underline space-x-4 md:space-x-10">
+    <div class="flex justify-center mt-10 text-6xl md:text-8xl text-blue-800 uppercase underline space-x-4 md:space-x-10">
       <div v-for="(x, index) in 'wisielec'" :key="index">
         {{ x }}
       </div>
