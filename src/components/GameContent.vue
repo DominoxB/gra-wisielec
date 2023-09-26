@@ -1,15 +1,31 @@
 <template>
-  <div class="grid grid-cols-2 p-16">
+  <div class="md:grid md:grid-cols-2 p-16">
     <!-- div z plansza wisielca -->
-    <div class="w-96 h-[500px] border border-black mx-auto">tu bedzie rysowany wisielec</div>
+    <div class="mx-auto mb-8 md:mb-0">
+      <img src="@/img/hang1.png" v-if="wrongLetters.length === 1"/>
+      <img src="@/img/hang2.png" v-if="wrongLetters.length === 2"/>
+      <img src="@/img/hang3.png" v-if="wrongLetters.length === 3"/>
+      <img src="@/img/hang4.png" v-if="wrongLetters.length === 4"/>
+      <img src="@/img/hang5.png" v-if="wrongLetters.length === 5"/>
+      <img src="@/img/hang6.png" v-if="wrongLetters.length === 6"/>
+      <img src="@/img/hang7.png" v-if="wrongLetters.length === 7"/>
+      <img src="@/img/hang8.png" v-if="wrongLetters.length === 8"/>
+      <img src="@/img/hang9.png" v-if="wrongLetters.length === 9"/>
+      <img src="@/img/hang10.png" v-if="wrongLetters.length === 10"/>
+    </div>
     <!-- div z hasłem i literami do wyboru -->
     <div>
       <!-- hasło -->
-      <div class="mb-80 justify-center flex">Tu będzie hasło</div>
+      <div class="md:mb-64 mt-4 justify-center flex uppercase font-lucky text-5xl underline space-x-10 flex-wrap">
+        <div v-for="(x, index) in randomElement" :key="index">
+          {{ checkLetters(x) ? x : '__' }}
+        </div>
+      </div>
       <!-- litery -->
-      <div class="flex gap-3 justify-center flex-wrap">
-        <div class="border-4 rounded-md border-blue-300 text-4xl p-2 font-lucky cursor-pointer" v-for="char in letters"
-          :key="char">
+      <div class="flex gap-1 md:gap-3 justify-center flex-wrap">
+        <div
+          class="rounded-md text-2xl md:text-4xl p-1 md:p-2 font-lucky"
+          v-for="char in letters" :key="char" @click="selectLetters(char)" :class="checkLetters(char) ? 'text-slate-500 border-2 border-slate-500' : 'border-blue-400 cursor-pointer border-2 md:border-4'">
           <span>{{ char }}</span>
         </div>
       </div>
@@ -18,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'GameContent',
@@ -51,8 +67,48 @@ export default defineComponent({
       'y',
       'z',
     ]
+    const passwordsToGuess = [
+      'matematyka',
+      'czekoladki',
+      'odkurzacz',
+      'parostatek',
+      'kangurzyca',
+      'poduszkowiec',
+      'pierniczki',
+      'krakowiaczek',
+      'zeszyty',
+      'sobota',
+      'marchewka',
+      'mitochondrium',
+      'batoniki',
+      'kolczyki',
+      'kasztany',
+      'galaktyka'
+    ]
+
+    const randomElement = passwordsToGuess[Math.floor(Math.random() * passwordsToGuess.length)]
+    const chosenLetters = ref([]) as any
+    const wrongLetters = ref([]) as any
+
+    const selectLetters = (char: string) => {
+      chosenLetters.value.push(char)
+      if (!randomElement.includes(char)) {
+        wrongLetters.value.push(char)
+      }
+    }
+    console.log(wrongLetters.length)
+
+    const checkLetters = (x: string) => {
+      return chosenLetters.value.includes(x)
+    }
+
     return {
-      letters
+      letters,
+      randomElement,
+      chosenLetters,
+      wrongLetters,
+      selectLetters,
+      checkLetters
     }
   }
 })
