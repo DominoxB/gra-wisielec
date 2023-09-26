@@ -14,11 +14,11 @@
       </div>
       <!-- litery -->
       <div class="flex gap-1 md:gap-3 justify-center flex-wrap">
-        <div class="rounded-md text-2xl md:text-4xl p-1 md:p-2 font-lucky" v-for="char in letters" :key="char"
-          @click="selectLetters(char)"
-          :class="checkLetters(char) ? 'text-slate-500 border-2 border-slate-500' : 'border-blue-400 cursor-pointer border-2 md:border-4'">
+        <button class="cursor-pointer border-2 md:border-4 border-blue-400 disabled:border-slate-500 disabled:text-slate-500 rounded-md text-2xl md:text-4xl p-1 md:p-2 font-lucky" v-for="char in letters" :key="char"
+          @click="selectLetters(char)" :disabled="chosenLetters.includes(char)"
+          >
           <span>{{ char }}</span>
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -88,6 +88,7 @@ export default defineComponent({
     const randomElement = passwordsToGuess[Math.floor(Math.random() * passwordsToGuess.length)]
     const chosenLetters = ref([]) as any
     const wrongLetters = ref([]) as any
+    const isLetterDisabled = ref(false)
 
     const selectLetters = (char: string) => {
       chosenLetters.value.push(char)
@@ -99,10 +100,10 @@ export default defineComponent({
     const checkLetters = (x: string) => {
       return chosenLetters.value.includes(x)
     }
-    
+
     const imgSrc = computed(() => {
       return require(`../img/hang${wrongLetters.value.length}.png`)
-      
+
     })
 
     return {
@@ -111,6 +112,7 @@ export default defineComponent({
       chosenLetters,
       wrongLetters,
       imgSrc,
+      isLetterDisabled,
       selectLetters,
       checkLetters
     }
