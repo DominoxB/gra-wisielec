@@ -43,34 +43,7 @@ export default defineComponent({
   },
   emits: ['cancel'],
   setup(props, context) {
-    const letters = [
-      'a',
-      'b',
-      'c',
-      'd',
-      'e',
-      'f',
-      'g',
-      'h',
-      'i',
-      'j',
-      'k',
-      'l',
-      'm',
-      'n',
-      'o',
-      'p',
-      'q',
-      'r',
-      's',
-      't',
-      'u',
-      'v',
-      'w',
-      'x',
-      'y',
-      'z',
-    ]
+    const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
     const passwordsToGuess = [
       'matematyka',
       'czekoladki',
@@ -94,8 +67,8 @@ export default defineComponent({
       'warsztaty'
     ]
 
-    const chosenLetters = ref([]) as any
-    const wrongLetters = ref([]) as any
+    const chosenLetters = ref([] as string[])
+    const wrongLetters = ref([] as string[])
 
     const randomPassword = ref('')
 
@@ -120,7 +93,6 @@ export default defineComponent({
 
     const imgSrc = computed(() => {
       return require(`../img/hang${wrongLetters.value.length}.png`)
-
     })
 
     const splitRandomPassword = computed(() => randomPassword.value.split(''))
