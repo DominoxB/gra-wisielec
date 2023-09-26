@@ -7,13 +7,14 @@
     <!-- div z hasłem i literami do wyboru -->
     <div>
       <!-- hasło -->
-      <div class="md:mb-64 mt-4 justify-center flex uppercase font-lucky text-5xl underline space-x-10 flex-wrap">
+      <div
+        class="md:mb-64 mt-4 justify-center flex uppercase font-lucky text-4xl md:text-5xl underline gap-4 md:gap-x-10 flex-wrap gap-y-2">
         <div v-for="(x, index) in randomElement" :key="index">
           {{ checkLetters(x) ? x : '__' }}
         </div>
       </div>
       <!-- litery -->
-      <div class="flex gap-1 md:gap-3 justify-center flex-wrap">
+      <div class="flex mt-10 md:mt-0 gap-1 md:gap-3 justify-center flex-wrap">
         <button
           class="cursor-pointer border-2 md:border-4 border-blue-400 disabled:border-slate-500 disabled:text-slate-500 rounded-md text-2xl md:text-4xl p-1 md:p-2 font-lucky"
           v-for="char in letters" :key="char" @click="selectLetters(char)" :disabled="chosenLetters.includes(char)">
@@ -22,8 +23,8 @@
       </div>
     </div>
   </div>
-  <ModalLost v-if="wrongLetters.length >= 10" />
-  <ModalWin v-if="containsAll" />
+  <ModalLost v-if="wrongLetters.length >= 10" @new-game="agree" @cancel-action="cancel" />
+  <ModalWin v-if="containsAll" @new-game="agree" @cancel-action="cancel" />
 </template>
 
 <script lang="ts">
@@ -89,6 +90,7 @@ export default defineComponent({
     const chosenLetters = ref([]) as any
     const wrongLetters = ref([]) as any
 
+
     const selectLetters = (char: string) => {
       chosenLetters.value.push(char)
       if (!randomElement.includes(char)) {
@@ -108,7 +110,15 @@ export default defineComponent({
     const splitRandomEl = randomElement.split('')
     const containsAll = computed(() => splitRandomEl.every(element => {
       return chosenLetters.value.includes(element)
-  }))
+    }))
+
+    const agree = () => {
+      location.reload()
+    }
+
+    const cancel = () => {
+      location.reload()
+    }
 
 
     return {
@@ -119,7 +129,9 @@ export default defineComponent({
       imgSrc,
       containsAll,
       selectLetters,
-      checkLetters
+      checkLetters,
+      agree,
+      cancel
     }
   }
 })
