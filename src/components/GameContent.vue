@@ -1,15 +1,15 @@
 <template>
-  <div class="md:grid md:grid-cols-2 p-16">
+  <div class="p-16 md:grid md:grid-cols-2">
     <!-- div z plansza wisielca -->
-    <div class="mx-auto mb-8 md:mb-0">
+    <div class="hidden md:flex mx-auto mb-8 md:mb-0">
       <img :src="imgSrc" v-if="wrongLetters.length > 0" />
     </div>
     <!-- div z hasłem i literami do wyboru -->
     <div>
       <!-- hasło -->
       <div
-        class="md:mb-64 mt-4 justify-center flex uppercase font-lucky text-4xl md:text-5xl underline gap-4 md:gap-x-10 flex-wrap gap-y-2">
-        <div v-for="(x, index) in randomElement" :key="index">
+        class="md:mb-64 mt-4 justify-center flex uppercase font-lucky text-4xl md:text-5xl underline gap-4 md:gap-x-10 flex-wrap whitespace-nowrap gap-y-2">
+        <div v-for="(x, index) in randomPassword" :key="index">
           {{ checkLetters(x) ? x : '__' }}
         </div>
       </div>
@@ -22,13 +22,16 @@
         </button>
       </div>
     </div>
+    <div class="mx-auto mt-16 md:mb-0 md:hidden">
+      <img :src="imgSrc" v-if="wrongLetters.length > 0" />
+    </div>
   </div>
   <ModalLost v-if="wrongLetters.length >= 10" @new-game="agree" @cancel-action="cancel" />
   <ModalWin v-if="containsAll" @new-game="agree" @cancel-action="cancel" />
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, onMounted } from 'vue'
 import ModalLost from './ModalLost.vue'
 import ModalWin from './ModalWin.vue'
 
@@ -38,7 +41,8 @@ export default defineComponent({
     ModalLost,
     ModalWin
   },
-  setup() {
+  emits: ['cancel'],
+  setup(props, context) {
     const letters = [
       'a',
       'b',
@@ -86,14 +90,22 @@ export default defineComponent({
       'galaktyka'
     ]
 
-    const randomElement = passwordsToGuess[Math.floor(Math.random() * passwordsToGuess.length)]
     const chosenLetters = ref([]) as any
     const wrongLetters = ref([]) as any
 
+    const randomPassword = ref('')
+
+    const getPassword = () => {
+      randomPassword.value = passwordsToGuess[Math.floor(Math.random() * passwordsToGuess.length)]
+    }
+
+    onMounted(() => {
+      getPassword()
+    })
 
     const selectLetters = (char: string) => {
       chosenLetters.value.push(char)
-      if (!randomElement.includes(char)) {
+      if (!randomPassword.value.includes(char)) {
         wrongLetters.value.push(char)
       }
     }
@@ -107,23 +119,30 @@ export default defineComponent({
 
     })
 
-    const splitRandomEl = randomElement.split('')
-    const containsAll = computed(() => splitRandomEl.every(element => {
+    const splitRandomPassword = computed(() => randomPassword.value.split(''))
+
+    const containsAll = computed(() => splitRandomPassword.value.every(element => {
       return chosenLetters.value.includes(element)
-    }))
+    }) && splitRandomPassword.value.length > 0)
+
+    const clean = () => {
+      wrongLetters.value = []
+      chosenLetters.value = []
+      getPassword()
+    }
 
     const agree = () => {
-      location.reload()
+      clean()
     }
 
     const cancel = () => {
-      location.reload()
+      context.emit('cancel')
+      clean()
     }
-
 
     return {
       letters,
-      randomElement,
+      randomPassword,
       chosenLetters,
       wrongLetters,
       imgSrc,

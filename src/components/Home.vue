@@ -7,7 +7,7 @@
     </div>
   </div>
   <IntroContent v-if="isStartView" @click-play="play" />
-  <GameContent v-else />
+  <GameContent v-else @cancel="isStartView = true" />
 </template>
 
 <script lang="ts">
