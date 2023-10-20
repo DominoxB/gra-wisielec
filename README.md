@@ -1,5 +1,5 @@
 # Wisielec
-Projekt znanej i lubianej gry Wisielec, wykonany przy pomocy Vue3, Typescripta i Taiwinda.
+The project of the well-known and popular Hangman game, made using Vue3, Typescript and Taiwind.
 
 ## Project setup
 ```
